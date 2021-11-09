@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    network_mode: bridge
+    ports:
+      - 4566:4566
+      - 8080:8080
+    environment:
+      - DEBUG=1
+      - SERVICES=lambda,sqs,sns,events,sts
+      - DATA_DIR=/tmp/localstack/data
+      - DEFAULT_REGION=us-east-1
+      - LAMBDA_EXECUTOR=docker
+    volumes:
+      - "./storage:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./startup:/docker-entrypoint-initaws.d"
